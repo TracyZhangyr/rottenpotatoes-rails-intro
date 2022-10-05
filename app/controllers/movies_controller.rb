@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
     end
 
-    @movies = Movie.with_ratings(@ratings_to_show).order(sorting_column)
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(sorting_column)
 
   end
 

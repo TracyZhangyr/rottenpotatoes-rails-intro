@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
     # determine what values to pass to Movie.with_ratings
     @ratings_to_show = session[:ratings] or params[:ratings] or []
     if @ratings_to_show.empty?
-      @ratings_to_show = Hash[@all_ratings.collect{|x| [x, "1"]}] 
+      @ratings_to_show = Hash[@all_ratings.map{|key| [key, key]}] 
     end
 
     sorting_column = session[:sort] or params[:sort]

@@ -14,6 +14,12 @@ class MoviesController < ApplicationController
 
     @movies = Movie.with_ratings(@ratings_to_show)
 
+    if session[:ratings] != params[:ratings] or session[:sort] != params[:sort]
+      session[:ratings] = @ratings_to_show
+      session[:sort] = sorting_column
+      redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
+    end
+
     sorting_column = session[:sort] or params[:sort]
     case sorting_column
     when 'title'
@@ -24,11 +30,6 @@ class MoviesController < ApplicationController
       @release_date_header = 'hilite bg-warning'
     end
 
-    if session[:ratings] != params[:ratings] or session[:sort] != params[:sort]
-      session[:ratings] = @ratings_to_show
-      session[:sort] = sorting_column
-      redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
-    end
 
   end
 

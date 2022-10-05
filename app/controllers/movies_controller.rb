@@ -11,6 +11,8 @@ class MoviesController < ApplicationController
     # determine what values to pass to Movie.with_ratings
     @ratings_to_show = params.has_key?(:ratings) ? params[:ratings].keys : []
     @ratings_hash = Hash[@ratings_to_show.collect{|x| [x, '1']}]
+    session[:ratings] = @ratings_hash
+
     @movies = Movie.with_ratings(@ratings_to_show)
 
     if params.has_key?(:sort)
@@ -20,6 +22,19 @@ class MoviesController < ApplicationController
         @title_header = 'hilite bg-warning'
       when 'release_date'
         @movies = @movies.order(params[:sort])
+        @release_date_header = 'hilite bg-warning'
+      end
+      session[:sort] = params[:sort]
+    end
+
+    if session.has_key?(:sort)
+      @ratings_hash = session[:ratings]
+      case session[:sort]
+      when 'title'
+        @movies = @movies.order(session[:sort])
+        @title_header = 'hilite bg-warning'
+      when 'release_date'
+        @movies = @movies.order(session[:sort])
         @release_date_header = 'hilite bg-warning'
       end
     end

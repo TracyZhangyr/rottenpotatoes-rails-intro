@@ -9,35 +9,27 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
     # determine what values to pass to Movie.with_ratings
-    @ratings_to_show = params.has_key?(:ratings) ? params[:ratings].keys : []
-    @ratings_hash = Hash[@ratings_to_show.collect{|x| [x, '1']}]
-    session[:ratings] = @ratings_hash
+    @ratings_to_show = session[:ratings].keys or params[:ratings].keys or []
+    @ratings_to_show = Hash[@ratings_to_show.collect{|x| [x, '1']}]
 
     @movies = Movie.with_ratings(@ratings_to_show)
 
-    if params.has_key?(:sort)
-      case params[:sort]
-      when 'title'
-        @movies = @movies.order(params[:sort])
-        @title_header = 'hilite bg-warning'
-      when 'release_date'
-        @movies = @movies.order(params[:sort])
-        @release_date_header = 'hilite bg-warning'
-      end
-      session[:sort] = params[:sort]
+    sorting_column = session[:sort] or params[:sort]
+    case sorting_column
+    when 'title'
+      @movies = @movies.order(:title)
+      @title_header = 'hilite bg-warning'
+    when 'release_date'
+      @movies = @movies.order(:release_date)
+      @release_date_header = 'hilite bg-warning'
     end
 
-    if session.has_key?(:sort)
-      @ratings_hash = session[:ratings]
-      case session[:sort]
-      when 'title'
-        @movies = @movies.order(session[:sort])
-        @title_header = 'hilite bg-warning'
-      when 'release_date'
-        @movies = @movies.order(session[:sort])
-        @release_date_header = 'hilite bg-warning'
-      end
+    if session[:ratings] != params[:ratings] or session[:sort] != params[:sort]
+      session[:ratings] = @ratings_to_show
+      session[:sort] = sorting_column
+      redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
     end
+
   end
 
   def new

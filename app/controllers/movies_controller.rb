@@ -9,7 +9,7 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
 
-    @ratings_to_show = session[:ratings].keys or params[:ratings].keys or []
+    @ratings_to_show = session[:ratings] or params[:ratings] or []
     if !@ratings_to_show.empty?
       @ratings_to_show = Hash[@ratings_to_show.collect{|key| [key, "1"]}] 
     end

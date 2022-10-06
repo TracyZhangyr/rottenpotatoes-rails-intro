@@ -15,9 +15,9 @@ class MoviesController < ApplicationController
       if not session[:ratings]
         session[:ratings] = @ratings_to_show
       elsif not session[:sort]
-        session[:sort] = nil
+        session[:sort] = ''
       end
-      redirect_to movies_path(:sort => nil, :ratings => @ratings_to_show) and return
+      redirect_to movies_path(:sort => '', :ratings => @ratings_to_show) and return
     end
 
     if not params[:ratings] or not params[:sort]

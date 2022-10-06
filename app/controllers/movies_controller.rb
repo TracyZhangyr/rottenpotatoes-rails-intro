@@ -9,12 +9,12 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
 
-    @ratings_to_show = session[:ratings] or params[:ratings] or []
+    @ratings_to_show = session[:ratings] || params[:ratings] || []
     if @ratings_to_show.empty?
       @ratings_to_show = Hash[@all_ratings.collect{|key| [key, "1"]}] 
     end
 
-    sorting_column = session[:sort] or params[:sort]
+    sorting_column = session[:sort] || params[:sort]
     case sorting_column
     when 'title'
       @title_header = 'hilite bg-warning'
@@ -22,7 +22,7 @@ class MoviesController < ApplicationController
       @release_date_header = 'hilite bg-warning'
     end
 
-    if session[:ratings] != params[:ratings] or session[:sort] != params[:sort]
+    if session[:ratings] != params[:ratings] || session[:sort] != params[:sort]
       session[:ratings] = @ratings_to_show
       session[:sort] = sorting_column
       redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return

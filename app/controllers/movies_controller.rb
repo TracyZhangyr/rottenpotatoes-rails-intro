@@ -15,9 +15,9 @@ class MoviesController < ApplicationController
       if not session[:ratings]
         session[:ratings] = @ratings_to_show
       elsif not session[:sort]
-        session[:sort] = ''
+        session[:sort] = nil
       end
-      redirect_to movies_path(:sort => '', :ratings => @ratings_to_show) and return
+      redirect_to movies_path(:sort => nil, :ratings => @ratings_to_show) and return
     end
 
     if not params[:ratings] or not params[:sort]
@@ -34,7 +34,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:sort => sorting, :ratings => ratings) and return 
     end 
 
-    @ratings_to_show = params[:ratings].nil? ? params[:ratings].keys : []
+    @ratings_to_show = params[:ratings].nil? ? [] : params[:ratings].keys
     @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)

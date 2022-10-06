@@ -35,7 +35,6 @@ class MoviesController < ApplicationController
     end 
 
     @ratings_to_show = params[:ratings].nil? ? [] : params[:ratings].keys
-    session[:ratings] = params[:ratings]
     @movies = Movie.with_ratings(@ratings_to_show)
 
     @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
@@ -48,8 +47,10 @@ class MoviesController < ApplicationController
         @release_date_header = 'hilite bg-warning'
         @movies = @movies.order(:release_date)
       end
-      session[:sort] = params[:sort]
     end
+
+    session[:ratings] = params[:ratings]
+    session[:sort] = params[:sort]
   
   end
 

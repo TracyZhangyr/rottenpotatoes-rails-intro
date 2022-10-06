@@ -7,7 +7,6 @@ class MoviesController < ApplicationController
   end
 
   def index
-
     @all_ratings = Movie.all_ratings
 
     if not session[:ratings] or not session[:sort]
@@ -35,20 +34,21 @@ class MoviesController < ApplicationController
     end 
 
     @ratings_to_show = params[:ratings].nil? ? [] : params[:ratings].keys
+    session[:ratings] = params[:ratings]
+    @movies = Movie.with_ratings(@ratings_to_show)
+
     @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)
       if params[:sort] == 'title'
         @title_header = 'hilite bg-warning'
-        @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+        @movies = @movies.order(:title)
       elsif params[:sort] == 'release_date'
         @release_date_header = 'hilite bg-warning'
-        @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+        @movies = @movies.order(:release_date)
       end
+      session[:sort] = params[:sort]
     end
-
-    session[:ratings] = params[:ratings]
-    session[:sort] = params[:sort]
   
   end
 

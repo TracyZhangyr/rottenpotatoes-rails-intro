@@ -10,8 +10,8 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
 
     @ratings_to_show = session[:ratings] or params[:ratings] or []
-    if !@ratings_to_show.empty?
-      @ratings_to_show = Hash[@ratings_to_show.collect{|key| [key, "1"]}] 
+    if @ratings_to_show.empty?
+      @ratings_to_show = Hash[@all_ratings.collect{|key| [key, "1"]}] 
     end
 
     sorting_column = session[:sort] or params[:sort]
@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
     end
 
-    @movies = Movie.with_ratings(@ratings_to_show).order(sorting_column)
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(sorting_column)
 
   end
 

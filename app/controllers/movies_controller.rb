@@ -35,17 +35,15 @@ class MoviesController < ApplicationController
     end 
 
     @ratings_to_show = params[:ratings].nil? ? [] : params[:ratings].keys
-    @movies = Movie.with_ratings(@ratings_to_show)
-
     @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)
       if params[:sort] == 'title'
         @title_header = 'hilite bg-warning'
-        @movies = @movies.order(:title)
+        @movies = Movie.with_ratings(@ratings_to_show).order(:title)
       elsif params[:sort] == 'release_date'
         @release_date_header = 'hilite bg-warning'
-        @movies = @movies.order(:release_date)
+        @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
       end
     end
 

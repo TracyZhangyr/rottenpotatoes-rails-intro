@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
     @ratings_to_show = session[:ratings] || params[:ratings].keys || @all_ratings
     @ratings_to_show = Hash[@ratings_to_show.collect{|key| [key, "1"]}] 
 
-    sorting_column = session[:sort] || params[:sort] || 'id'
+    sorting_column = session[:sort] || params[:sort]
     case sorting_column
     when 'title'
       @title_header = 'hilite bg-warning'

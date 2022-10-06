@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
 
     if not session[:ratings] or not session[:sort]
-      @ratings_to_show = Hash[@all_ratings.collect{|x| [x, "1"]}]
+      @ratings_to_show = Hash[@all_ratings.map{|x| [x, "1"]}]
       if not session[:ratings]
         session[:ratings] = @ratings_to_show
       elsif not session[:sort]
@@ -38,7 +38,7 @@ class MoviesController < ApplicationController
     session[:ratings] = params[:ratings]
     @movies = Movie.with_ratings(@ratings_to_show)
 
-    @ratings_hash = Hash[@ratings_to_show.collect{|x| [x, "1"]}] 
+    @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)
       if params[:sort] == 'title'

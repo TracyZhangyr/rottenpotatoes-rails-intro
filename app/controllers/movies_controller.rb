@@ -34,7 +34,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:sort => sorting, :ratings => ratings) and return 
     end 
 
-    @ratings_to_show = params[:ratings].keys if params[:ratings] else []
+    @ratings_to_show = params[:ratings].nil? ? params[:ratings].keys : []
     @ratings_hash = Hash[@ratings_to_show.map{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)

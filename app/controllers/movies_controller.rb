@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
     if session[:ratings] != params[:ratings] || session[:sort] != params[:sort]
       session[:ratings] = @ratings_to_show
       session[:sort] = sorting_column
-      redirect_to movies_path(:sort => sorting_column, :ratings => @ratings_to_show) and return
+      redirect_to :sort => sorting_column, :ratings => @ratings_to_show and return
     end
 
     @movies = Movie.with_ratings(@ratings_to_show.keys).order(sorting_column)

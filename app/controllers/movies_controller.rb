@@ -41,11 +41,10 @@ class MoviesController < ApplicationController
     @ratings_hash = Hash[@ratings_to_show.collect{|x| [x, "1"]}] 
 
     if params.has_key?(:sort)
-      case params[:sort]
-      when 'title'
+      if params[:sort] == 'title'
         @title_header = 'hilite bg-warning'
         @movies = @movies.order(:title)
-      when 'release_date'
+      else if params[:sort] == 'release_date'
         @release_date_header = 'hilite bg-warning'
         @movies = @movies.order(:release_date)
       end
@@ -88,5 +87,5 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
-  
+
 end

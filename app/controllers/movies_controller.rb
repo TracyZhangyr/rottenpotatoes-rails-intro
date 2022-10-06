@@ -14,7 +14,7 @@ class MoviesController < ApplicationController
       @ratings_to_show = Hash[@all_ratings.collect{|x| [x, "1"]}]
       if not session[:ratings]
         session[:ratings] = @ratings_to_show
-      else if not session[:sort]
+      elsif not session[:sort]
         session[:sort] = ''
       end
       redirect_to movies_path(:sort => '', :ratings => @ratings_to_show) and return
@@ -44,7 +44,7 @@ class MoviesController < ApplicationController
       if params[:sort] == 'title'
         @title_header = 'hilite bg-warning'
         @movies = @movies.order(:title)
-      else if params[:sort] == 'release_date'
+      elsif params[:sort] == 'release_date'
         @release_date_header = 'hilite bg-warning'
         @movies = @movies.order(:release_date)
       end
